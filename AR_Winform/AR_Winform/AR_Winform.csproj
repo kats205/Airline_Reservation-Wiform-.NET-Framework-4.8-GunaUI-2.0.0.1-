@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B1EC600C-8B69-4729-991B-FF1EE90087D1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AR_Winform</RootNamespace>
+    <AssemblyName>AR_Winform</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Guna.UI2">
+      <HintPath>C:\Users\Admin\Downloads\Guna_UI_Framework_Ultimate_v2.0.0.1\Guna.UI-Framework-Lib-master\Guna.UI2 WinForms\.net 4.0\Guna.UI2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\DTOs\AirportRepositoryADO.cs" />
+    <Compile Include="Application\DTOs\FlightsRepositoryADO.cs" />
+    <Compile Include="Application\DTOs\PromotionRepositoryADO.cs" />
+    <Compile Include="Application\Interfaces\IAuthenticationServices.cs" />
+    <Compile Include="Application\Services\AuthenticationServices.cs" />
+    <Compile Include="Domain\Entities\Aircraft.cs" />
+    <Compile Include="Domain\Entities\Airline.cs" />
+    <Compile Include="Domain\Entities\Airport.cs" />
+    <Compile Include="Domain\Entities\AuditLog.cs" />
+    <Compile Include="Domain\Entities\Booking.cs" />
+    <Compile Include="Domain\Entities\BookingPromotion.cs" />
+    <Compile Include="Domain\Entities\CurrentUser.cs" />
+    <Compile Include="Domain\Entities\Flight.cs" />
+    <Compile Include="Infrastructure\Data\MyDbContext.cs" />
+    <Compile Include="Domain\Entities\Notification.cs" />
+    <Compile Include="Domain\Entities\Payment.cs" />
+    <Compile Include="Domain\Entities\Promotion.cs" />
+    <Compile Include="Domain\Entities\Refund.cs" />
+    <Compile Include="Domain\Entities\Role.cs" />
+    <Compile Include="Domain\Entities\Seat.cs" />
+    <Compile Include="Domain\Entities\SeatClass.cs" />
+    <Compile Include="Domain\Entities\Ticket.cs" />
+    <Compile Include="Domain\Entities\User.cs" />
+    <Compile Include="Presentation\Forms\UserForm\BookingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\BookingForm.Designer.cs">
+      <DependentUpon>BookingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\FilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\FilterForm.Designer.cs">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\RegisterForm.Designer.cs">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\BookingStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\BookingStatusForm.Designer.cs">
+      <DependentUpon>BookingStatusForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserProfile.Designer.cs">
+      <DependentUpon>UserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\PromotionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\PromotionForm.Designer.cs">
+      <DependentUpon>PromotionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\SupportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentation\Forms\UserForm\SupportForm.Designer.cs">
+      <DependentUpon>SupportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Program.cs" />
+    <Compile Include="Presentation\UControls\UserCntl\AirportItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\AirportItem.Designer.cs">
+      <DependentUpon>AirportItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\ContentCntrol.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\ContentCntrol.Designer.cs">
+      <DependentUpon>ContentCntrol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\HeaderCntrol.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\HeaderCntrol.Designer.cs">
+      <DependentUpon>HeaderCntrol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\AirportSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\AirportSelector.Designer.cs">
+      <DependentUpon>AirportSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\AllFlights.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\AllFlights.Designer.cs">
+      <DependentUpon>AllFlights.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\DepartureDate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\DepartureDate.Designer.cs">
+      <DependentUpon>DepartureDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\PromotionCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\PromotionCard.Designer.cs">
+      <DependentUpon>PromotionCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\ReturnDate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\ReturnDate.Designer.cs">
+      <DependentUpon>ReturnDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\Searching.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\Searching.Designer.cs">
+      <DependentUpon>Searching.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\TypeTicket.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presentation\UControls\UserCntl\TypeTicket.Designer.cs">
+      <DependentUpon>TypeTicket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\Utils\Validation.cs" />
+    <EmbeddedResource Include="Presentation\Forms\UserForm\BookingForm.resx">
+      <DependentUpon>BookingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Forms\UserForm\FilterForm.resx">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Forms\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\Forms\RegisterForm.resx">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\ContentCntrol.resx">
+      <DependentUpon>ContentCntrol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\HeaderCntrol.resx">
+      <DependentUpon>HeaderCntrol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\AirportItem.resx">
+      <DependentUpon>AirportItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\AirportSelector.resx">
+      <DependentUpon>AirportSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\AllFlights.resx">
+      <DependentUpon>AllFlights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\DepartureDate.resx">
+      <DependentUpon>DepartureDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\PromotionCard.resx">
+      <DependentUpon>PromotionCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\ReturnDate.resx">
+      <DependentUpon>ReturnDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\Searching.resx">
+      <DependentUpon>Searching.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentation\UControls\UserCntl\TypeTicket.resx">
+      <DependentUpon>TypeTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Presentation\Forms\Admin\" />
+    <Folder Include="Presentation\Forms\Staff\" />
+    <Folder Include="Presentation\UControls\Admin\" />
+    <Folder Include="Presentation\UControls\Staff\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\unhide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\hide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Images\theme1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Images\theme2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\dot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\coin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\gift-box.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\gift-voucher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\landing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\loading-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\seat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\take-off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\right-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\order.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\right-arrow-tra.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Images\beach1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Images\beach2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\calendar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\calendar-unchecked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\sale.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\plane.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\adult.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\child.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\infant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\left-chevron.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\right-chevron.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\search-blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\search-white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\blue-right-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\flights.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\number-11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Icons\number-22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Presentation\Assets\Images\filterTheme.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+</Project>
