@@ -1,181 +1,194 @@
 # TỪ ĐIỂN DỮ LIỆU (DATA DICTIONARY)
 
-Tài liệu này mô tả chi tiết ý nghĩa của từng cột (attribute) trong các bảng cơ sở dữ liệu của dự án NextGenLMS.
-**Ghi chú chung:**
-*   Các trường `Id`, `CreatedAt`, `UpdatedAt`, `IsDeleted` có trong **TẤT CẢ** các bảng (do kế thừa từ BaseEntity) nên không liệt kê lặp lại, trừ khi nó có vai trò nghiệp vụ đặc biệt (như `UpdatedAt` trong `QuizSubmissions`).
+Tài liệu mô tả chi tiết 20 bảng dữ liệu trong hệ thống NextGenLMS.
 
 ---
 
-## 1. PHÂN HỆ HỆ THỐNG (SYSTEM)
+## 1. QUY ƯỚC CHUNG (COMMON SCHEMA)
 
-### 1.1. Departments (Khoa)
-Lưu trữ thông tin các Khoa trong trường (VD: CNTT, Kinh tế).
+Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế thừa từ `BaseEntity`. 
+**Lưu ý:** Nếu bảng con (Sub-Table) dùng lại ID của bảng cha làm khóa chính, cột `Id` sẽ được ghi chú rõ ràng là **PK/FK**.
 
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `Id` | `UNIQUEIDENTIFIER` | PK | Khóa chính. |
-| `Name` | `NVARCHAR(MAX)` | Not Null | Tên khoa (VD: Khoa Công nghệ thông tin). |
-| `Code` | `NVARCHAR(MAX)` | Not Null | Mã khoa (VD: FIT). Dùng để đặt mã sinh viên. |
-| `CreatedAt` | `DATETIME2` | Not Null | Ngày tạo. |
-
-### 1.2. Majors (Ngành học)
-Các chuyên ngành thuộc một Khoa.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `Id` | `UNIQUEIDENTIFIER` | PK | Khóa chính. |
-| `Name` | `NVARCHAR(MAX)` | Not Null | Tên ngành (VD: Kỹ thuật phần mềm). |
-| `DepartmentId` | `UNIQUEIDENTIFIER` | FK | Thuộc khoa nào. |
-
-### 1.3. SystemConfigs (Cấu hình)
-Lưu cấu hình động của hệ thống (Key-Value).
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `ConfigKey` | `NVARCHAR(MAX)` | Not Null | Tên cấu hình (VD: `MaxUploadSize`). |
-| `ConfigValue` | `NVARCHAR(MAX)` | Not Null | Giá trị (VD: `50MB`). |
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Id` | `UNIQUEIDENTIFIER` | **PK**. Khóa chính sinh tự động (GUID). |
+| `CreatedAt` | `DATETIME2` | Thời điểm tạo. |
+| `UpdatedAt` | `DATETIME2` | Thời điểm cập nhật cuối (Null nếu chưa sửa). |
+| `IsDeleted` | `BIT` | Cờ xóa mềm (1 = Đã xóa). |
 
 ---
 
-## 2. PHÂN HỆ NGƯỜI DÙNG (USERS)
+## 2. PHÂN HỆ HỆ THỐNG (SYSTEM)
 
-### 2.1. AppUsers (Người dùng)
-Bảng trung tâm lưu tất cả Admin, Giảng viên, Sinh viên.
+### 2.1. SystemConfigs
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `ConfigKey` | `NVARCHAR` | Mã cấu hình (VD: `MaxFileSize`). |
+| `ConfigValue` | `NVARCHAR` | Giá trị cấu hình. |
 
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `Email` | `NVARCHAR(MAX)` | Not Null | Email đăng nhập. |
-| `PasswordHash` | `NVARCHAR(MAX)` | Not Null | Mật khẩu đã mã hóa (BCrypt). |
-| `FullName` | `NVARCHAR(MAX)` | Not Null | Họ và tên đầy đủ. |
-| `StudentCode` | `NVARCHAR(MAX)` | Nullable | Mã SV (Chỉ dành cho sinh viên, Giảng viên field này null). |
-| `AvatarUrl` | `NVARCHAR(MAX)` | Nullable | Link ảnh đại diện. |
-| `RoleId` | `UNIQUEIDENTIFIER` | FK | Vai trò (Admin/Lecturer/Student). |
-| `IsFirstLogin` | `BIT` | Not Null | = 1 nếu là lần đăng nhập đầu (để yêu cầu đổi mật khẩu). |
+### 2.2. AcademicYears
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Name` | `NVARCHAR` | Tên niên khóa (VD: 2023-2024). |
+| `StartDate` | `DATETIME2` | Ngày bắt đầu niên khóa. |
+| `EndDate` | `DATETIME2` | Ngày kết thúc niên khóa. |
 
----
+### 2.3. Semesters
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Name` | `NVARCHAR` | Tên học kỳ (VD: Spring 2024). |
 
-## 3. PHÂN HỆ KHÓA HỌC (COURSES)
+### 2.4. Departments
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Name` | `NVARCHAR` | Tên khoa/Bộ môn. |
+| `Code` | `NVARCHAR` | Mã khoa (VD: FIT). |
 
-### 3.1. Courses (Lớp học phần)
-Một lớp học cụ thể mở trong một học kỳ.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `CourseCode` | `NVARCHAR(MAX)` | Not Null | Mã lớp học phần (VD: NET101_FALL24). |
-| `Name` | `NVARCHAR(MAX)` | Not Null | Tên môn học. |
-| `SemesterId` | `UNIQUEIDENTIFIER` | FK | Học kỳ nào. |
-| `LecturerId` | `UNIQUEIDENTIFIER` | FK | Giảng viên nào phụ trách. |
-
-### 3.2. CourseStudents (Danh sách lớp)
-Bảng trung gian ghi nhận sinh viên nào học lớp nào.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `CourseId` | `UNIQUEIDENTIFIER` | FK | Lớp học. |
-| `StudentId` | `UNIQUEIDENTIFIER` | FK | Sinh viên. |
-| `EnrolledDate` | `DATETIME2` | Not Null | Ngày được thêm vào lớp. |
+### 2.5. Majors
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Name` | `NVARCHAR` | Tên ngành học. |
+| `DepartmentId` | `GUID (FK)` | Thuộc khoa nào (`Departments`). |
 
 ---
 
-## 4. PHÂN HỆ NỘI DUNG (CONTENT) - TPT Strategy
+## 3. PHÂN HỆ NGƯỜI DÙNG (USERS)
 
-### 4.1. CourseContents (Nội dung gốc)
-Bảng cha chứa thông tin chung của mọi loại học liệu.
+### 3.1. AppRoles
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `RoleName` | `NVARCHAR` | Tên vai trò (Admin, Lecturer, Student). |
+| `Description` | `NVARCHAR` | Mô tả chi tiết vai trò. |
 
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `ChapterId` | `UNIQUEIDENTIFIER` | FK | Thuộc chương nào của khóa học. |
-| `Title` | `NVARCHAR(MAX)` | Not Null | Tiêu đề bài học/bài thi. |
-| `OrderIndex` | `INT` | Not Null | Thứ tự hiển thị trong chương. |
-| `Type` | `INT` | Not Null | 1=Lesson, 2=Quiz, 3=Assignment. |
-
-### 4.2. Lessons (Bài giảng)
-(*) Kế thừa từ `CourseContents`.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `Id` | `UNIQUEIDENTIFIER` | PK/FK | Trỏ về `CourseContents.Id`. |
-| `FileUrl` | `NVARCHAR(MAX)` | Nullable | Link file (PDF/Video) nếu có. |
-| `ContentHtml` | `NVARCHAR(MAX)` | Nullable | Nội dung bài học dạng văn bản (Rich Text). |
-| `DurationSeconds`| `INT` | Not Null | Thời lượng video (để tính tiến độ). |
-
-### 4.3. Quizzes (Bài kiểm tra)
-(*) Kế thừa từ `CourseContents`.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `Id` | `UNIQUEIDENTIFIER` | PK/FK | Trỏ về `CourseContents.Id`. |
-| `DurationMinutes`| `INT` | Not Null | Thời gian làm bài (phút). |
-| `OpenTime` | `DATETIME2` | Nullable | Thời điểm mở đề. |
-| `CloseTime` | `DATETIME2` | Nullable | Thời điểm đóng đề. |
-| `ShuffleQuestions`| `BIT` | Not Null | Có xáo trộn câu hỏi không? |
-| `ShuffleAnswers` | `BIT` | Not Null | Có xáo trộn đáp án A/B/C/D không? |
-
-### 4.4. Assignments (Bài tập)
-(*) Kế thừa từ `CourseContents`.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `Id` | `UNIQUEIDENTIFIER` | PK/FK | Trỏ về `CourseContents.Id`. |
-| `DueDate` | `DATETIME2` | Nullable | Hạn nộp bài. |
-| `MaxScore` | `INT` | Not Null | Điểm tối đa (thang điểm 10 hoặc 100). |
+### 3.2. AppUsers
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Email` | `NVARCHAR` | Email đăng nhập. |
+| `PasswordHash` | `NVARCHAR` | Mật khẩu đã mã hóa. |
+| `FullName` | `NVARCHAR` | Họ và tên. |
+| `StudentCode` | `NVARCHAR` | Mã sinh viên (Null nếu là Giảng viên). |
+| `AvatarUrl` | `NVARCHAR` | Đường dẫn ảnh đại diện. |
+| `RoleId` | `GUID (FK)` | Vai trò người dùng (`AppRoles`). |
+| `DepartmentId` | `GUID (FK)` | Thuộc khoa nào (`Departments`). |
+| `IsFirstLogin` | `BIT` | Cờ đánh dấu lần đầu đăng nhập. |
 
 ---
 
-## 5. PHÂN HỆ ĐÁNH GIÁ (ASSESSMENT)
+## 4. PHÂN HỆ KHÓA HỌC (COURSES)
 
-### 5.1. Questions (Ngân hàng câu hỏi)
-Lưu trữ các câu hỏi (độc lập với đề thi).
+### 4.1. Courses
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `CourseCode` | `NVARCHAR` | Mã lớp học phần (VD: NET101_FALL24). |
+| `Name` | `NVARCHAR` | Tên môn học hiển thị. |
+| `SemesterId` | `GUID (FK)` | Học kỳ (`Semesters`). |
+| `AcademicYearId` | `GUID (FK)` | Niên khóa (`AcademicYears`). |
+| `MajorId` | `GUID (FK)` | Ngành học (`Majors`). |
+| `LecturerId` | `GUID (FK)` | Giảng viên phụ trách (`AppUsers`). |
 
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `ContentText` | `NVARCHAR(MAX)` | Not Null | Nội dung câu hỏi. |
-| `Type` | `INT` | Not Null | 1=Trắc nghiệm 1 đáp án, 2=Nhiều đáp án... |
-| `TopicId` | `UNIQUEIDENTIFIER` | FK | Thuộc chủ đề nào (VD: Chương 1, Chương 2). |
+### 4.2. Chapters
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Title` | `NVARCHAR` | Tên chương học. |
+| `OrderIndex` | `INT` | Số thứ tự sắp xếp. |
+| `CourseId` | `GUID (FK)` | Thuộc khóa học nào (`Courses`). |
 
-### 5.2. Answers (Đáp án)
-Các phương án trả lời cho câu hỏi.
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `QuestionId` | `UNIQUEIDENTIFIER` | FK | Thuộc câu hỏi nào. |
-| `ContentText` | `NVARCHAR(MAX)` | Not Null | Nội dung đáp án (VD: "Đáp án A..."). |
-| `IsCorrect` | `BIT` | Not Null | Là đáp án đúng hay sai. |
-
-### 5.3. QuizQuestions (Cấu trúc đề)
-Gán câu hỏi vào bài kiểm tra (Many-to-Many).
-
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `QuizId` | `UNIQUEIDENTIFIER` | FK | Bài kiểm tra nào. |
-| `QuestionId` | `UNIQUEIDENTIFIER` | FK | Lấy câu hỏi nào. |
-| `Points` | `INT` | Not Null | Câu này bao nhiêu điểm trong bài thi này. |
+### 4.3. CourseStudents
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `EnrolledDate` | `DATETIME2` | Ngày sinh viên vào lớp. |
+| `CourseId` | `GUID (FK)` | Lớp học (`Courses`). |
+| `StudentId` | `GUID (FK)` | Sinh viên (`AppUsers`). |
 
 ---
 
-## 6. PHÂN HỆ THEO DÕI (TRACKING)
+## 5. PHÂN HỆ NỘI DUNG (CONTENT - TPT)
 
-### 6.1. QuizSubmissions (Bài làm của SV)
+### 5.1. CourseContents (Bảng Cha)
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Title` | `NVARCHAR` | Tiêu đề nội dung. |
+| `Type` | `INT` | Loại (1=Lesson, 2=Quiz, 3=Assignment). |
+| `OrderIndex` | `INT` | Thứ tự trong chương. |
+| `ChapterId` | `GUID (FK)` | Thuộc chương nào (`Chapters`). |
 
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `QuizId` | `UNIQUEIDENTIFIER` | FK | Bài kiểm tra nào. |
-| `StudentId` | `UNIQUEIDENTIFIER` | FK | Sinh viên nào làm. |
-| `Status` | `NVARCHAR` | Not Null | `InProgress` (Đang làm), `Submitted` (Đã nộp). |
-| `Score` | `FLOAT` | Not Null | Điểm số đạt được. |
-| `TempData` | `NVARCHAR(MAX)` | Nullable | **JSON** chứa danh sách đáp án đang chọn (Auto-save). |
-| `StartTime` | `DATETIME2` | Not Null | Thời điểm bắt đầu ấn nút làm bài. |
-| `EndTime` | `DATETIME2` | Nullable | Thời điểm nộp bài. |
-| `UpdatedAt` | `DATETIME2` | Nullable | Thời điểm lưu cuối cùng (Dùng để check resume). |
+### 5.2. Lessons (Bảng Con)
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| **`Id`** | **`GUID (PK/FK)`** | **Vừa là khóa chính, vừa là khóa ngoại trỏ về `CourseContents.Id`**. |
+| `FileUrl` | `NVARCHAR` | Link file Video/PDF. |
+| `DurationSeconds`| `INT` | Thời lượng bài giảng (giây). |
+| `ContentHtml` | `NVARCHAR` | Nội dung văn bản (Rich Text). |
 
-### 6.2. LessonProgresses (Tiến độ học)
+### 5.3. Quizzes (Bảng Con)
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| **`Id`** | **`GUID (PK/FK)`** | **Vừa là khóa chính, vừa là khóa ngoại trỏ về `CourseContents.Id`**. |
+| `DurationMinutes`| `INT` | Thời gian làm bài (phút). |
+| `OpenTime` | `DATETIME2` | Thời gian mở đề. |
+| `CloseTime` | `DATETIME2` | Thời gian đóng đề. |
+| `ShuffleQuestions`| `BIT` | Có trộn câu hỏi không? |
+| `ShuffleAnswers` | `BIT` | Có trộn đáp án không? |
 
-| Tên Cột | Kiểu Dữ Liệu | Đặc Tả | Mô Tả |
-| :--- | :--- | :--- | :--- |
-| `LessonId` | `UNIQUEIDENTIFIER` | FK | Bài học nào. |
-| `VideoProgressSeconds`| `INT` | Not Null | Sinh viên đã xem đến giây thứ bao nhiêu. |
-| `IsCompleted` | `BIT` | Not Null | Đã hoàn thành bài học chưa. |
+### 5.4. Assignments (Bảng Con)
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| **`Id`** | **`GUID (PK/FK)`** | **Vừa là khóa chính, vừa là khóa ngoại trỏ về `CourseContents.Id`**. |
+| `DueDate` | `DATETIME2` | Hạn nộp bài. |
+| `MaxScore` | `INT` | Điểm số tối đa. |
 
 ---
 
+## 6. PHÂN HỆ ĐÁNH GIÁ (ASSESSMENT)
 
+### 6.1. QuestionTopics
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Name` | `NVARCHAR` | Tên chủ đề câu hỏi. |
+| `LecturerId` | `GUID (FK)` | Giảng viên tạo chủ đề. |
+
+### 6.2. Questions
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `ContentText` | `NVARCHAR` | Nội dung câu hỏi. |
+| `Type` | `INT` | Loại câu hỏi (Trắc nghiệm, Tự luận...). |
+| `TopicId` | `GUID (FK)` | Thuộc chủ đề nào (`QuestionTopics`). |
+
+### 6.3. Answers
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `ContentText` | `NVARCHAR` | Nội dung đáp án. |
+| `IsCorrect` | `BIT` | Là đáp án đúng (True/False). |
+| `QuestionId` | `GUID (FK)` | Thuộc câu hỏi nào (`Questions`). |
+
+### 6.4. QuizQuestions
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Points` | `INT` | Điểm số của câu hỏi trong đề này. |
+| `QuizId` | `GUID (FK)` | Đề thi (`Quizzes`). |
+| `QuestionId` | `GUID (FK)` | Câu hỏi (`Questions`). |
+
+---
+
+## 7. PHÂN HỆ THEO DÕI (TRACKING)
+
+### 7.1. LessonProgresses
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `VideoProgressSeconds`| `INT` | Thời gian đã xem (giây). |
+| `IsCompleted` | `BIT` | Đã hoàn thành bài học chưa. |
+| `LastAccess` | `DATETIME2` | Thời điểm xem cuối cùng. |
+| `LessonId` | `GUID (FK)` | Bài học (`Lessons`). |
+| `UserId` | `GUID (FK)` | Sinh viên (`AppUsers`). |
+
+### 7.2. QuizSubmissions
+| Tên Cột | Kiểu Dữ Liệu | Mô Tả |
+| :--- | :--- | :--- |
+| `Status` | `NVARCHAR` | Trạng thái (`InProgress`, `Submitted`). |
+| `Score` | `FLOAT` | Điểm số đạt được. |
+| `StartTime` | `DATETIME2` | Thời gian bắt đầu làm. |
+| `EndTime` | `DATETIME2` | Thời gian nộp bài. |
+| `TempData` | `NVARCHAR` | **JSON** lưu bài làm tạm thời (Resume). |
+| `UpdatedAt` | `DATETIME2` | **Quan trọng**: Thời điểm Auto-save cuối cùng. |
+| `QuizId` | `GUID (FK)` | Đề thi (`Quizzes`). |
+| `StudentId` | `GUID (FK)` | Sinh viên (`AppUsers`). |
