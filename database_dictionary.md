@@ -6,8 +6,7 @@ Tài liệu mô tả chi tiết 20 bảng dữ liệu trong hệ thống NextGen
 
 ## 1. QUY ƯỚC CHUNG (COMMON SCHEMA)
 
-Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế thừa từ `BaseEntity`. 
-**Lưu ý:** Nếu bảng con (Sub-Table) dùng lại ID của bảng cha làm khóa chính, cột `Id` sẽ được ghi chú rõ ràng là **PK/FK**.
+Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế thừa từ `BaseEntity`. Các cột này sẽ **không được liệt kê lặp lại** trong danh sách chi tiết.
 
 | Tên Cột | Kiểu Dữ Liệu | Mô Tả |
 | :--- | :--- | :--- |
@@ -104,6 +103,8 @@ Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế 
 
 ## 5. PHÂN HỆ NỘI DUNG (CONTENT - TPT)
 
+> **Lưu ý TPT:** Các bảng con (`Lessons`, `Quizzes`, `Assignments`) chia sẻ chung **Id** với bảng cha `CourseContents`.
+
 ### 5.1. CourseContents (Bảng Cha)
 | Tên Cột | Kiểu Dữ Liệu | Mô Tả |
 | :--- | :--- | :--- |
@@ -115,7 +116,6 @@ Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế 
 ### 5.2. Lessons (Bảng Con)
 | Tên Cột | Kiểu Dữ Liệu | Mô Tả |
 | :--- | :--- | :--- |
-| **`Id`** | **`GUID (PK/FK)`** | **Vừa là khóa chính, vừa là khóa ngoại trỏ về `CourseContents.Id`**. |
 | `FileUrl` | `NVARCHAR` | Link file Video/PDF. |
 | `DurationSeconds`| `INT` | Thời lượng bài giảng (giây). |
 | `ContentHtml` | `NVARCHAR` | Nội dung văn bản (Rich Text). |
@@ -123,7 +123,6 @@ Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế 
 ### 5.3. Quizzes (Bảng Con)
 | Tên Cột | Kiểu Dữ Liệu | Mô Tả |
 | :--- | :--- | :--- |
-| **`Id`** | **`GUID (PK/FK)`** | **Vừa là khóa chính, vừa là khóa ngoại trỏ về `CourseContents.Id`**. |
 | `DurationMinutes`| `INT` | Thời gian làm bài (phút). |
 | `OpenTime` | `DATETIME2` | Thời gian mở đề. |
 | `CloseTime` | `DATETIME2` | Thời gian đóng đề. |
@@ -133,7 +132,6 @@ Tất cả các bảng bên dưới đều mặc định bao gồm 4 cột kế 
 ### 5.4. Assignments (Bảng Con)
 | Tên Cột | Kiểu Dữ Liệu | Mô Tả |
 | :--- | :--- | :--- |
-| **`Id`** | **`GUID (PK/FK)`** | **Vừa là khóa chính, vừa là khóa ngoại trỏ về `CourseContents.Id`**. |
 | `DueDate` | `DATETIME2` | Hạn nộp bài. |
 | `MaxScore` | `INT` | Điểm số tối đa. |
 
