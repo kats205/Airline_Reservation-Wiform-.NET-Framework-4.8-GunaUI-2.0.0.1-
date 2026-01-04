@@ -1,6 +1,8 @@
 # TỪ ĐIỂN DỮ LIỆU (DATA DICTIONARY)
 
 Tài liệu này mô tả chi tiết ý nghĩa của từng cột (attribute) trong các bảng cơ sở dữ liệu của dự án NextGenLMS.
+**Ghi chú chung:**
+*   Các trường `Id`, `CreatedAt`, `UpdatedAt`, `IsDeleted` có trong **TẤT CẢ** các bảng (do kế thừa từ BaseEntity) nên không liệt kê lặp lại, trừ khi nó có vai trò nghiệp vụ đặc biệt (như `UpdatedAt` trong `QuizSubmissions`).
 
 ---
 
@@ -175,5 +177,5 @@ Gán câu hỏi vào bài kiểm tra (Many-to-Many).
 | `IsCompleted` | `BIT` | Not Null | Đã hoàn thành bài học chưa. |
 
 ---
-**Ghi chú chung:**
-*   Các trường `Id`, `CreatedAt`, `UpdatedAt`, `IsDeleted` có trong **TẤT CẢ** các bảng (do kế thừa từ BaseEntity) nên không liệt kê lặp lại, trừ khi nó có vai trò nghiệp vụ đặc biệt (như `UpdatedAt` trong `QuizSubmissions`).
+
+
